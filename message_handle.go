@@ -221,6 +221,16 @@ func (m *MessageMatchDispatcher) OnGroupByGroupName(groupName string, handlers .
 	m.OnUser(f, handlers...)
 }
 
+// OnTrickled 注册处理消息类型为拍一拍的处理函数
+func (m *MessageMatchDispatcher) OnTrickled(handlers ...MessageContextHandler) {
+	m.RegisterHandler(func(message *Message) bool { return message.IsTickled() }, handlers...)
+}
+
+// OnRecalled 注册撤回消息类型的处理函数
+func (m *MessageMatchDispatcher) OnRecalled(handlers ...MessageContextHandler) {
+	m.RegisterHandler(func(message *Message) bool { return message.IsRecalled() }, handlers...)
+}
+
 // AsMessageHandler 将MessageMatchDispatcher转换为MessageHandler
 func (m *MessageMatchDispatcher) AsMessageHandler() MessageHandler {
 	return func(msg *Message) {

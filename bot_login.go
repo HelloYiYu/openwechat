@@ -164,7 +164,7 @@ func (s *ScanLogin) Login(bot *Bot) error {
 	var uuid = s.UUID
 	if uuid == "" {
 		var err error
-		uuid, err = bot.Caller.GetLoginUUID()
+		uuid, err = bot.Caller.GetLoginUUID(bot.Context())
 		if err != nil {
 			return err
 		}
@@ -213,7 +213,7 @@ func (p *PushLogin) Login(bot *Bot) error {
 	if err := botReload(bot, p.storage); err != nil {
 		return err
 	}
-	resp, err := bot.Caller.WebWxPushLogin(bot.Storage.LoginInfo.WxUin)
+	resp, err := bot.Caller.WebWxPushLogin(bot.Context(), bot.Storage.LoginInfo.WxUin)
 	if err != nil {
 		return err
 	}
@@ -253,7 +253,7 @@ func (l *LoginChecker) CheckLogin() error {
 	var tip = l.Tip
 	for {
 		// 长轮询检查是否扫码登录
-		resp, err := l.Bot.Caller.CheckLogin(uuid, tip)
+		resp, err := l.Bot.Caller.CheckLogin(l.Bot.Context(), uuid, tip)
 		if err != nil {
 			return err
 		}

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"math/rand"
-	"mime/multipart"
 	"net/http"
 	"path/filepath"
 	"reflect"
@@ -40,7 +39,7 @@ func GetRandomDeviceId() string {
 }
 
 // GetFileContentType 获取文件上传的类型
-func GetFileContentType(file multipart.File) (string, error) {
+func GetFileContentType(file io.Reader) (string, error) {
 	data := make([]byte, 512)
 	if _, err := file.Read(data); err != nil {
 		return "", err
